@@ -5,7 +5,7 @@ public interface pavithraaction {
 	public void listallproductname();
 	public void deleteproductname(String productname);
 	public void updateproductname(String productname);
-	public void searchproductname(String productname);
+	public void searchproductname(String productname,String typeofitem);
 	public void searchproductname(String quantity,int itemrate);
 	public void sortproductname();
 	
