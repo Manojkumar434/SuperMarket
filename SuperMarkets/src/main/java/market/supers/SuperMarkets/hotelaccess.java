@@ -1,28 +1,33 @@
 package market.supers.SuperMarkets;
 
 import java.util.InputMismatchException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Scanner;
+import java.util.TreeSet;
+import java.util.Vector;
 
 public class hotelaccess implements Runnable, pavithraaction
 {
-	pavithrahotel[] market=new pavithrahotel[10];
+	ArrayList<pavithrahotel>market=new ArrayList<pavithrahotel>();
 	Scanner scan=new Scanner(System.in);
 	public hotelaccess()
 	{
-		market[0] =new pavithrahotel("SaravanaMasala","PapperPowder",36,"450G");
-		market[1]=new pavithrahotel("AachiMasala","FandaPowder",90,"200G");
-		market[2]=new pavithrahotel("SelvamMasala","karamasala",78,"100G");
-		market[3]=new pavithrahotel("SakthiMasala","BovantoPowder",90,"200G");
-		market[4]=new pavithrahotel("CaseryMasala","OrangeCasery",7800,"10KG");
-		market[5]=new pavithrahotel("CaseryMasala","Red With yellow Combo Powder",9,"20G");
-		market[6]=new pavithrahotel("MuttonMasala","GravyPowder",780,"1KG");
-		market[7]=new pavithrahotel("FishMasala","FryPowder",900,"2KG");
-		market[8]=new pavithrahotel("ChickenMasala","ChillyPowder",170,"1KG");
-		market[9]=new pavithrahotel("EggMasala","Egg Rice Powder",100,"2KG");
+		market.add(new pavithrahotel("SaravanaMasala","PapperPowder",36,"450G"));
+		market.add(new pavithrahotel("AachiMasala","FandaPowder",90,"200G"));
+		market.add(new pavithrahotel("SelvamMasala","karamasala",78,"100G"));
+		market.add(new pavithrahotel("SakthiMasala","BovantoPowder",90,"200G"));
+		market.add(new pavithrahotel("CaseryMasala","OrangeCasery",7800,"10KG"));
+		market.add(new pavithrahotel("CaseryMasala","Red With yellow Combo Powder",9,"20G"));
+		market.add(new pavithrahotel("MuttonMasala","GravyPowder",780,"1KG"));
+		market.add(new pavithrahotel("FishMasala","FryPowder",900,"2KG"));
+		market.add(new pavithrahotel("ChickenMasala","ChillyPowder",170,"1KG"));
+		market.add(new pavithrahotel("EggMasala","Egg Rice Powder",100,"2KG"));
 	}
 	@Override
 	synchronized public void run() {
-		// TODO Auto-generated method stub
 		System.out.println("Welcome "+Thread.currentThread().getName()+" to hotelaccess Control");
 		do
 		 {
@@ -106,60 +111,32 @@ public class hotelaccess implements Runnable, pavithraaction
 	public String addnewproductname(pavithrahotel hotel) 
 	{
 		// TODO Auto-generated method stub
-		try
-		{
-		for(int index=0;index<market.length;index++)
-		{
-			if(market[index]==null)
-			{
-				market[index]=hotel;
-				return hotel.getProductname()+" has added this ProductName";
-			}
-		}
-		throw new HotelNotFoundException();
-	}
-		catch( HotelNotFoundException hot)
-		{
-			System.out.println(hot+"\n Deleted Somthing inorder to Add: ");
-			for(pavithrahotel pavi:market)
-			{
-				System.out.println(pavi.getProductname());
-			}
-			deleteproductname(scan.next());
-			return addnewproductname(hotel);
-		}
+		market.add(hotel);
+		return hotel.getProductname()+"Has Added";
 	}
 
 	@Override
 	public void listallproductname() {
 		// TODO Auto-generated method stub
-		for(pavithrahotel temp:market)
+		Iterator<pavithrahotel>user=market.iterator();
+		while(user.hasNext())
 		{
-				try
-			{
-				System.out.println(temp.toString());
-			}
-			catch(NullPointerException np)
-			{
-				System.out.println(np);
-				continue;
-			}
+			System.out.println(user.next());
 		}
-		
 	}
 
 	@Override
 	public void deleteproductname(String typeofitem) {
 		// TODO Auto-generated method stub
+		List<pavithrahotel>tmp=new Vector<pavithrahotel>();
+		tmp.addAll(market);
 		try
 		{
-		for(int index=0;index<market.length;index++)
+		for(int index=0;index<market.size();index++)
 		{
-			if(market[index]==null)
-				continue;
-			if(market[index].getProductname().equalsIgnoreCase(typeofitem))
+			if(tmp.get(index).getProductname().equalsIgnoreCase(typeofitem))
 			{
-				market[index]=null;
+				market.remove(tmp.get(index));
 				System.out.println(typeofitem+"is deleted successfully");
 				return;
 			}
@@ -182,165 +159,60 @@ public class hotelaccess implements Runnable, pavithraaction
 	{
 		try
 		{
-		for(int index=0;index<market.length;index++)
-			
+		for(int index=0;index<market.size();index++)
 		{
-			if(market[index]==null)
-				continue;
-			if(market[index].getProductname().equalsIgnoreCase(productname)) 
+			if(market.get(index).getProductname().equalsIgnoreCase(productname));
 			{
-				System.out.println(market[index]);
-				try
-				{
-				System.out.println("Tell us your Update property Name");
-				String seal= scan.next();
-				switch(seal)
+				System.out.println("Tell us what to update: ");
+				String what=scan.next();
+				switch(what)
 				{
 				case "productname":
-					System.out.println("Tell us ProductName: ");
-					String xhat=scan.next();
-					market[index].setProductname(productname);
-					break;
-				case "typeofitem":
-					System.out.println("Tell us new TypeofItem");
-					String zhat= scan.next();
-					market[index].setTypeofitem(zhat);
-					break;
+					System.out.println("Tell us whats new Product name for "+productname);
+					market.get(index).setProductname(scan.next());
+					System.out.println(productname+" Product name has updated as "+market.get(index).getProductname());
+					return;
+				case "Typeofitem":
+					System.out.println("Tell us whats new typeofitem name for"+productname);
+					market.get(index).setTypeofitem(scan.next());
+					System.out.println((productname+"Type of item has updates as"+market.get(index).getTypeofitem()));
+					return;
+				case "Itemrate":
+					System.out.println("Tell us whats new itemrate for"+productname);
+					market.get(index).setItemrate(scan.nextInt());
+					System.out.println(productname+"Itemrate has updates as"+market.get(index).getItemrate());
+					return;
 				case "quantity":
-					System.out.println("Tell us new Quantity");
-					String ahat=scan.next();
-					market[index].setQuantity(ahat);
-					break;
-				case "itemrate":
-					System.out.println("Tell us new ItemRate");
-					int bhat=scan.nextInt();
-					market[index].setItemrate(bhat);
-					break;
+					System.out.println("Tell us whats new quantity for" +productname);
+					market.get(index).setQuantity(scan.next());
+					System.out.println(productname+"Quantity has updated as"+market.get(index).getQuantity());
+					return;
 					default:throw new HotelNotFoundException();
-				}
-			System.out.println(" has updated in "+productname);
-			return;
-				}
-				catch(HotelNotFoundException | InputMismatchException forr)
-				{
-					Scanner scans =new Scanner(System.in);
-					System.out.println(forr+" enter exact name to update details: productname,typeofitem,itemname,quantity");
-					System.out.println("Tell us your UpdateName");
-					String seal= scans.next();
-					switch(seal)
-					{
-					case "productname":
-						System.out.println("Tell us ProductName: ");
-						String xhat=scans.next();
-						market[index].setProductname(productname);
-						break;
-					case "typeofitem":
-						System.out.println("Tell us new TypeofItem");
-						String zhat= scans.next();
-						market[index].setTypeofitem(zhat);
-						break;
-					case "quantity":
-						System.out.println("Tell us new Quantity");
-						String ahat=scans.next();
-						market[index].setQuantity(ahat);
-						break;
-					case "itemrate":
-						System.out.println("Tell us new ItemRate");
-						int bhat=scans.nextInt();
-						market[index].setItemrate(bhat);
-						break;
-						default:System.out.println("Maximum chance is over");
 					}
-				System.out.println(" has updated in "+productname);
-				return;
-				}
 			}
 		}
-		throw new HotelNotFoundException();
-		}
-		catch(HotelNotFoundException hote)
-		{
-			System.out.println(hote+"\nInvalid Productname name, enter correctly");
-			for(pavithrahotel h1:market)
-			{
-				System.out.println(h1.getProductname());
-			}
-			updateproductname(scan.next());
-		}
-		//System.out.println(name+" hasn't updated");
 	}
-	@Override
-	public void sortproductname() 
-	{
-		pavithrahotel pavi=null;
-		System.out.println("Based on what you wish to sort");
-		String what=scan.next();
-		
-		for(int hold=0;hold<=market.length;hold++)
+		catch(HotelNotFoundException exe)
 		{
-			for(int com=hold+1;com<market.length;com++)
+			System.out.println(exe+"\n keyword to update not matched select any below:");
+			for(pavithrahotel f:market)
 			{
-				if(what.equalsIgnoreCase("Productname"))
-				{
-					if(market[com]==null)
-						continue;
-					if(market[hold].getProductname().compareTo(market[com].getProductname())>0)
-					{
-						pavi=market[hold];
-						market[hold]=market[com];
-						market[com]=pavi;					
-					}
-				}
-				else if(what.equalsIgnoreCase("TypeofItem"))
-				{
-					if(market[com]==null)
-						continue;
-					if(market[hold].getTypeofitem().compareTo(market[com].getTypeofitem())>0)
-					{
-						pavi=market[hold];
-						market[hold]=market[com];
-						market[com]=pavi;
-					}
-				}
-				else if(what.equalsIgnoreCase("Quantity"))
-				{
-					if(market[com]==null)
-						continue;
-					if(market[hold].getQuantity().compareToIgnoreCase(market[com].getQuantity())>=0)
-					{
-						pavi=market[hold];
-						market[hold]=market[com];
-						market[com]=pavi;
-					}
-				}
-				else if(what.equalsIgnoreCase("ItemRate"))
-				{
-					if(market[com]==null)
-						continue;
-					if(market[hold].getItemrate()>=market[com].getItemrate())
-					{
-						pavi=market[hold];
-						market[hold]=market[com];
-						market[com]=pavi;
-					}		
-				}
+			System.out.println(f.getProductname ());
 			}
+			updateproductname(productname);
 		}
-
 	}
-				
 public void searchproductname(String productname,String typeofitem)
 	{
 	try
 	{
 		System.out.println("  Trying to fetch pavithrahotel matching the productname "+productname+"or typeofitem"+typeofitem);
-		for(int index=0;index<market.length;index++)
+		for(int index=0;index<market.size();index++)
 		{
-			if(market[index]==null)
-				continue;
-			if(market[index].getProductname().equalsIgnoreCase(productname)|| market[index].getTypeofitem().equalsIgnoreCase(typeofitem))
+
+			if(market.get(index).getProductname().equalsIgnoreCase(productname)|| market.get(index).getTypeofitem().equalsIgnoreCase(typeofitem))
 			{
-				System.out.println(market[index]);
+				System.out.println(market.get(index));
 				return;
 			}
 		}
@@ -350,13 +222,12 @@ public void searchproductname(String productname,String typeofitem)
 	{
 
 		System.out.println(inp+"\n Invaild Something ,Plese Exactly Correct productName |typeofitem");
-		for(int index=0;index<market.length;index++)
+		listallproductname();
+		for(int index=0;index<market.size();index++)
 		{
-			if(market[index]==null)
-				continue;
-			if(market[index].getProductname().equalsIgnoreCase(productname)|| market[index].getTypeofitem().equalsIgnoreCase(typeofitem))
+			if(market.get(index).getProductname().equalsIgnoreCase(productname)|| market.get(index).getTypeofitem().equalsIgnoreCase(typeofitem))
 			{
-				System.out.println(market[index]);
+				System.out.println(market.get(index));
 				return;
 			}
 		}
@@ -364,19 +235,17 @@ public void searchproductname(String productname,String typeofitem)
 	}
 	}
 	@Override
-	public void searchproductname(String quantity, int itemrate) {
-		// TODO Auto-generated method stub
+	public void searchproductname(String quantity, int itemrate) 
+	{
 		boolean hai=false;
 		try
 		{
 		System.out.println(" Trying to fetch pavithrahotel matching the Quantity "+quantity+" or  Itemrate "+itemrate);
-		for(int index=0;index<market.length;index++)
+		for(int index=0;index<market.size();index++)
 		{
-			if(market[index]==null)
-				continue;
-			if(market[index].getQuantity().equalsIgnoreCase(quantity) || market[index].getItemrate()>=itemrate)
+			if(market.get(index).getQuantity().equalsIgnoreCase(quantity) || market.get(index).getItemrate()>=itemrate)
 			{
-				System.out.println(market[index]);
+				System.out.println(market.get(index));
 				//return;
 				hai=true;
 			}
@@ -387,8 +256,16 @@ public void searchproductname(String productname,String typeofitem)
 	catch(HotelNotFoundException inpu)
 	{
 		System.out.println(inpu+" Invaild Something ,Plese Exactly Correct quantity |itemrate");
+		listallproductname();
 		searchproductname(scan.next(),scan.nextInt());
 	}
+	}
+	@Override
+	public void sortproductname() 
+	{  	
+
+		Collections.sort(market);
+		
 	}
 	
 }

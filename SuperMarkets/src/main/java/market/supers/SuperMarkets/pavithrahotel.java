@@ -1,6 +1,7 @@
 package market.supers.SuperMarkets;
 
-public class pavithrahotel {
+public class pavithrahotel implements Comparable <pavithrahotel>
+{
 	private String productname;
 	private String typeofitem;
 	private int itemrate;
@@ -44,6 +45,12 @@ public class pavithrahotel {
 	public pavithrahotel() {
 		super();
 		// TODO Auto-generated constructor stub
+	}
+	@Override
+	public int compareTo(pavithrahotel o) {
+		// TODO Auto-generated method stub
+		return this.productname.compareTo(o.productname);
+
 	}
 	
 
