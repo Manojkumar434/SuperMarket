@@ -1,6 +1,8 @@
 package market.supers.SuperMarkets;
 
-public class pavithrahotel implements Comparable <pavithrahotel>
+import java.io.Serializable;
+
+public class pavithrahotel implements Comparable <pavithrahotel>, Serializable
 {
 	private String productname;
 	private String typeofitem;
